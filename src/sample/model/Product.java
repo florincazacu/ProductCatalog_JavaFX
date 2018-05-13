@@ -13,21 +13,28 @@ public class Product {
     private SimpleStringProperty name;
     private SimpleStringProperty description;
     private SimpleDoubleProperty price;
-    private SimpleStringProperty colour;
+    private SimpleStringProperty color;
     private SimpleBooleanProperty inStock;
     private Date expiringDate;
-    private SimpleStringProperty categoryName;
+
     private SimpleIntegerProperty categoryId;
+    private SimpleStringProperty categoryName;
+
+    private SimpleIntegerProperty brandId;
+    private SimpleStringProperty brandName;
+
 
     public Product() {
         this.id = new SimpleIntegerProperty();
         this.name = new SimpleStringProperty();
         this.description = new SimpleStringProperty();
         this.price = new SimpleDoubleProperty();
-        this.colour = new SimpleStringProperty();
+        this.color = new SimpleStringProperty();
         this.inStock = new SimpleBooleanProperty();
         this.categoryName = new SimpleStringProperty();
         this.categoryId = new SimpleIntegerProperty();
+        this.brandId = new SimpleIntegerProperty();
+        this.brandName = new SimpleStringProperty();
     }
 
     public void setId(int id) {
@@ -46,8 +53,8 @@ public class Product {
         this.price.set(price);
     }
 
-    public void setColour(String colour) {
-        this.colour.set(colour);
+    public void setColor(String color) {
+        this.color.set(color);
     }
 
     public void setInStock(boolean inStock) {
@@ -66,6 +73,14 @@ public class Product {
         this.categoryId.set(categoryId);
     }
 
+    public void setBrandId(int brandId) {
+        this.brandId.set(brandId);
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName.set(brandName);
+    }
+
     public int getId() {
         return id.get();
     }
@@ -82,8 +97,8 @@ public class Product {
         return price.get();
     }
 
-    public String getColour() {
-        return colour.get();
+    public String getColor() {
+        return color.get();
     }
 
     public boolean getInStock() {
@@ -94,12 +109,20 @@ public class Product {
         return expiringDate;
     }
 
+    public int getCategoryId() {
+        return categoryId.get();
+    }
+
     public String getCategoryName(){
         return categoryName.get();
     }
 
-    public int getCategoryId() {
-        return categoryId.get();
+    public int getBrandId() {
+        return brandId.get();
+    }
+
+    public String getBrandName() {
+        return brandName.get();
     }
 
 }

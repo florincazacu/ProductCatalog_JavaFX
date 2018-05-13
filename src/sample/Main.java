@@ -20,16 +20,20 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    // Github Test
+
     @Override
     public void init() throws Exception {
         super.init();
         if (!DataSource.getInstance().open()) {
             System.out.println("Cannot connect to DB");
         }
-        DataSource.getInstance().createProductsTable();
-        DataSource.getInstance().createCategoriesTable();
+//        DataSource.getInstance().createProductsTable();
+//        DataSource.getInstance().createCategoriesTable();
+//        DataSource.getInstance().createBrandsTable();
 //        DataSource.getInstance().insertCategory();
 //        DataSource.getInstance().insertProduct();
+//        DataSource.getInstance().insertBrand();
     }
 
     @Override

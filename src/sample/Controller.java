@@ -1,18 +1,25 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableView;
 import sample.model.Constants;
 import sample.model.DataSource;
 import sample.model.Product;
 
-
 public class Controller {
     @FXML
+    public ProgressBar progressBar;
+    @FXML
     private TableView<Product> productsTable;
+
+    public void exit() {
+        Platform.exit();
+    }
 
     public void listProducts() {
         Task<ObservableList<Product>> task = new GetAllProductsTask();
@@ -27,12 +34,5 @@ class GetAllProductsTask extends Task {
         return FXCollections.observableArrayList(
                 DataSource.getInstance().queryProducts(Constants.ORDER_ASC)
         );
-    }
-}
-
-class GetAllCategoriesClass extends Task {
-    @Override
-    protected Object call() throws Exception {
-        return null;
     }
 }

@@ -17,14 +17,34 @@
                         <PropertyValueFactory property="name"/>
                     </cellValueFactory>
                 </TableColumn>
+                <TableColumn prefWidth="${productsTable.width}" text="Price">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="price"/>
+                    </cellValueFactory>
+                </TableColumn>
                 <TableColumn prefWidth="${productsTable.width}" text="Description">
                     <cellValueFactory>
                         <PropertyValueFactory property="description"/>
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn prefWidth="${productsTable.width}" text="Price">
+                <TableColumn prefWidth="${productsTable.width}" text="Color">
                     <cellValueFactory>
-                        <PropertyValueFactory property="price"/>
+                        <PropertyValueFactory property="color"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="${productsTable.width}" text="In stock">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="inStock"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="${productsTable.width}" text="Category">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="categoryName"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="${productsTable.width}" text="Brand">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="brandName"/>
                     </cellValueFactory>
                 </TableColumn>
             </columns>
@@ -34,41 +54,31 @@
         </TableView>
     </center>
     <bottom>
-        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER_LEFT">
+        <VBox>
+        <HBox fx:id="buttonsLayout" alignment="CENTER" prefHeight="100.0" prefWidth="20.0" maxWidth="500" BorderPane.alignment="CENTER_LEFT">
             <children>
-                <ProgressBar fx:id="progressBar" visible="false" prefWidth="200.0" progress="0.0">
-                    <HBox.margin>
-                        <Insets left="50.0"/>
-                    </HBox.margin>
-                </ProgressBar>
-                <Button maxWidth="Infinity" mnemonicParsing="false" text="List Artists"/>
-                <Button maxWidth="Infinity" mnemonicParsing="false" text="Show Albums (artist)"/>
-                <Button maxWidth="Infinity" mnemonicParsing="false" text="Update Artist"/>
+                <Button prefWidth="${buttonsLayout.width}" maxWidth="${buttonsLayout.width}" mnemonicParsing="false" text="Add Product"/>
+                <Button prefWidth="${buttonsLayout.width}" maxWidth="${buttonsLayout.width}" mnemonicParsing="false" text="Modify Product"/>
+                <Button prefWidth="${buttonsLayout.width}" maxWidth="${buttonsLayout.width}" mnemonicParsing="false" text="Delete Product"/>
+                <Button prefWidth="${buttonsLayout.width}" maxWidth="${buttonsLayout.width}" mnemonicParsing="false" text="Reset filters"/>
+                <Button onAction="#exit" prefWidth="${buttonsLayout.width}" maxWidth="Infinity" mnemonicParsing="false" text="Exit"/>
             </children>
             <BorderPane.margin>
                 <Insets right="10.0"/>
             </BorderPane.margin>
         </HBox>
-        <!--<HBox alignment="BOTTOM_RIGHT" prefHeight="200.0" prefWidth="170.00" spacing="20.0" BorderPane.alignment="CENTER">-->
-            <!--<children>-->
-                <!--<Button maxWidth="Infinity" mnemonicParsing="false" text="List Artists"/>-->
-                <!--<Button maxWidth="Infinity" mnemonicParsing="false" text="Show Albums (artist)"/>-->
-                <!--<Button maxWidth="Infinity" mnemonicParsing="false" text="Update Artist"/>-->
-            <!--</children>-->
-            <!--<BorderPane.margin>-->
-                <!--<Insets right="10.0"/>-->
-            <!--</BorderPane.margin>-->
-        <!--</HBox>-->
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER_LEFT">
+                <children>
+                    <ProgressBar fx:id="progressBar" visible="false" prefWidth="200.0" progress="0.0">
+                        <HBox.margin>
+                            <Insets left="50.0"/>
+                        </HBox.margin>
+                    </ProgressBar>
+                </children>
+                <BorderPane.margin>
+                    <Insets right="10.0"/>
+                </BorderPane.margin>
+            </HBox>
+        </VBox>
     </bottom>
-    <!--<bottom>-->
-        <!--<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">-->
-            <!--<children>-->
-                <!--<ProgressBar fx:id="progressBar" visible="false" prefWidth="200.0" progress="0.0">-->
-                    <!--<HBox.margin>-->
-                        <!--<Insets left="50.0"/>-->
-                    <!--</HBox.margin>-->
-                <!--</ProgressBar>-->
-            <!--</children>-->
-        <!--</HBox>-->
-    <!--</bottom>-->
 </BorderPane>

@@ -45,8 +45,14 @@ public class DataSource {
         String createProductsTable = Constants.CREATE_TABLE + Constants.PRODUCTS_TABLE +
                 " (" + Constants.COLUMN_PRODUCT_ID + Constants._ID +
                 Constants.COLUMN_PRODUCT_NAME + " text, " +
+                Constants.COLUMN_PRODUCT_PRICE + " decimal, " +
                 Constants.COLUMN_PRODUCT_DESCRIPTION + " text, " +
-                Constants.COLUMN_PRODUCT_PRICE + " decimal" +
+                Constants.COLUMN_PRODUCT_COLOR + " text, " +
+                Constants.COLUMN_PRODUCT_IN_STOCK + " boolean, " +
+                Constants.COLUMN_PRODUCT_CATEGORY_ID + " integer, " +
+                Constants.COLUMN_PRODUCT_CATEGORY_NAME + " text, " +
+                Constants.COLUMN_PRODUCT_BRAND_ID + " integer, " +
+                Constants.COLUMN_PRODUCT_BRAND_NAME + " text " +
                 ")";
 
         System.out.println("create products table: " + createProductsTable);
@@ -71,17 +77,35 @@ public class DataSource {
         }
     }
 
+    public void createBrandsTable() {
+        String createCategoriesTable = Constants.CREATE_TABLE + Constants.BRANDS_TABLE +
+                " (" + Constants.COLUMN_BRAND_ID + Constants._ID +
+                Constants.COLUMN_BRAND_NAME + " text)";
+        System.out.println("create brands table " + createCategoriesTable);
+
+        try (PreparedStatement ps = connection.prepareStatement(createCategoriesTable)) {
+            ps.execute();
+        } catch (SQLException e) {
+            System.out.println("Error creating brands table: " + e.getMessage());
+        }
+    }
 
     public void insertProduct() {
-        String insertProduct = Constants.INSERT + Constants.PRODUCTS_TABLE +
+        String addProduct = Constants.INSERT + Constants.PRODUCTS_TABLE +
                 " (" + Constants.COLUMN_PRODUCT_NAME + ", " +
+                Constants.COLUMN_PRODUCT_PRICE + ", " +
                 Constants.COLUMN_PRODUCT_DESCRIPTION + ", " +
-                Constants.COLUMN_PRODUCT_PRICE + ") " +
-                "VALUES('name_test', 'description_test', '50.00')";
+                Constants.COLUMN_PRODUCT_COLOR + ", " +
+                Constants.COLUMN_PRODUCT_IN_STOCK + ", " +
+                Constants.COLUMN_PRODUCT_CATEGORY_ID + ", " +
+                Constants.COLUMN_PRODUCT_CATEGORY_NAME + ", " +
+                Constants.COLUMN_PRODUCT_BRAND_ID + ", " +
+                Constants.COLUMN_PRODUCT_BRAND_NAME + ") " +
+                "VALUES('name', '50.00', 'description', 'color', 'true', '2', 'category', '1', 'brand')";
 
-        System.out.println("insert: " + insertProduct);
+        System.out.println("insert: " + addProduct);
 
-        try (PreparedStatement ps = connection.prepareStatement(insertProduct)) {
+        try (PreparedStatement ps = connection.prepareStatement(addProduct)) {
             ps.execute();
         } catch (SQLException e) {
             System.out.println("Error adding product: " + e.getMessage());
@@ -89,22 +113,36 @@ public class DataSource {
     }
 
     public void insertCategory() {
-        String insertCategory = Constants.INSERT + Constants.CATEGORIES_TABLE +
+        String addCategory = Constants.INSERT + Constants.CATEGORIES_TABLE +
                 " (" + Constants.COLUMN_CATEGORY_NAME + ") " +
                 "VALUES('cat_name_test')";
 
-        System.out.println("insert: " + insertCategory);
+        System.out.println("insert: " + addCategory);
 
-        try (PreparedStatement ps = connection.prepareStatement(insertCategory)) {
+        try (PreparedStatement ps = connection.prepareStatement(addCategory)) {
             ps.execute();
         } catch (SQLException e) {
             System.out.println("Error adding product: " + e.getMessage());
         }
     }
 
-    public StringBuilder sortQuery(int sortOrder, StringBuilder stringBuilder) {
+    public void insertBrand() {
+        String addBrand = Constants.INSERT + Constants.BRANDS_TABLE +
+                " (" + Constants.COLUMN_BRAND_NAME + ") " +
+                "VALUES('brand_name_test')";
+
+        System.out.println("insert: " + addBrand);
+
+        try (PreparedStatement ps = connection.prepareStatement(addBrand)) {
+            ps.execute();
+        } catch (SQLException e) {
+            System.out.println("Error adding product: " + e.getMessage());
+        }
+    }
+
+    private StringBuilder sortQuery(int sortOrder, StringBuilder stringBuilder) {
         if (sortOrder != Constants.ORDER_DEFAULT) {
-            stringBuilder.append(Constants.QUERY_PRODUCTS_SORT_BY_NAME);
+            stringBuilder.append(Constants.QUERY_SORT_BY_NAME);
             if (sortOrder == Constants.ORDER_DESC) {
                 stringBuilder.append("DESC");
             } else {
@@ -120,19 +158,32 @@ public class DataSource {
         try (PreparedStatement ps = connection.prepareStatement(sortQuery(sortOrder, stringBuilder).toString());
              ResultSet results = ps.executeQuery()) {
             List<Product> products = new ArrayList<>();
+
             while (results.next()) {
                 Product product = new Product();
-                int id = results.getInt(Constants.INDEX_PRODUCT_ID);
-                String name = results.getString(Constants.INDEX_PRODUCT_NAME);
-                String desc = results.getString(Constants.INDEX_PRODUCT_DESCRIPTION);
-                double price = results.getDouble(Constants.INDEX_PRODUCT_PRICE);
-                product.setId(id);
-                product.setName(name);
-                product.setDescription(desc);
-                product.setPrice(price);
+//                int id = results.getInt(Constants.INDEX_PRODUCT_ID);
+//                String name = results.getString(Constants.INDEX_PRODUCT_NAME);
+//                double price = results.getDouble(Constants.INDEX_PRODUCT_PRICE);
+//                String desc = results.getString(Constants.INDEX_PRODUCT_DESCRIPTION);
+//                String color = results.getString(Constants.INDEX_PRODUCT_COLOR);
+//                boolean inStock = results.getBoolean(Constants.INDEX_PRODUCT_IN_STOCK);
+//                int categoryId = results.getInt(Constants.INDEX_PRODUCT_CATEGORY_ID);
+//                String categoryName = results.getString(Constants.INDEX_PRODUCT_CATEGORY_NAME);
+//                int brandId = results.getInt(Constants.INDEX_PRODUCT_BRAND_ID);
+//                String brandName = results.getString(Constants.INDEX_PRODUCT_BRAND_NAME);
+
+                product.setId(results.getInt(Constants.INDEX_PRODUCT_ID));
+                product.setName(results.getString(Constants.INDEX_PRODUCT_NAME));
+                product.setPrice(results.getDouble(Constants.INDEX_PRODUCT_PRICE));
+                product.setDescription(results.getString(Constants.INDEX_PRODUCT_DESCRIPTION));
+                product.setColor(results.getString(Constants.INDEX_PRODUCT_COLOR));
+                product.setInStock(results.getBoolean(Constants.INDEX_PRODUCT_IN_STOCK));
+                product.setCategoryId(results.getInt(Constants.INDEX_PRODUCT_CATEGORY_ID));
+                product.setCategoryName(results.getString(Constants.INDEX_PRODUCT_CATEGORY_NAME));
+                product.setBrandId(results.getInt(Constants.INDEX_PRODUCT_BRAND_ID));
+                product.setBrandName(results.getString(Constants.INDEX_PRODUCT_BRAND_NAME));
                 products.add(product);
             }
-
             return products;
         } catch (SQLException e) {
             System.out.println("Query products failed: " + e.getMessage());
