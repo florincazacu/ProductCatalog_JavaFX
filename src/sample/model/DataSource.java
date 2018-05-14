@@ -112,6 +112,40 @@ public class DataSource {
         }
     }
 
+//    public void insertProduct(String brand, String category, Product product) {
+//        try (PreparedStatement preparedStatement = connection.prepareStatement(Constants.INSERT_PRODUCT)) {
+//            connection.setAutoCommit(false);
+//
+//            int brandId = insertBrand(brand);
+//            int categoryId = insertCategory(category, brandId);
+//            insertIntoSongs.setInt(1, track);
+//            insertIntoSongs.setString(2, category);
+//            insertIntoSongs.setInt(3, categoryId);
+//
+//            int affectedRows = insertIntoSongs.executeUpdate();
+//            if (affectedRows == 1) {
+//                conn.commit();
+//            } else {
+//                throw new SQLException("The song insert failed");
+//            }
+//        } catch (Exception e) {
+//            System.out.println("Insert song exception: " + e.getMessage());
+//            try {
+//                System.out.println("Performing rollback");
+//                conn.rollback();
+//            } catch (SQLException e2) {
+//                System.out.println("Oh boy! Things are really bad! " + e.getMessage());
+//            }
+//        } finally {
+//            try {
+//                System.out.println("Resetting default commit behaviour");
+//                conn.setAutoCommit(true);
+//            } catch (SQLException e) {
+//                System.out.println("Couldn't reset auto-commit! " + e.getMessage());
+//            }
+//        }
+//    }
+
     public void insertCategory() {
         String addCategory = Constants.INSERT + Constants.CATEGORIES_TABLE +
                 " (" + Constants.COLUMN_CATEGORY_NAME + ") " +
