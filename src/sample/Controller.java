@@ -37,6 +37,18 @@ public class Controller {
         productsTable.itemsProperty().bind(task.valueProperty());
         new Thread(task).start();
     }
+
+    public void insertProduct(){
+        final Product product = new Product();
+
+        product.setName("P20");
+        product.setDescription("Mobile phone");
+        product.setPrice(100.00);
+        product.setColor("Black");
+        product.setInStock(true);
+
+        DataSource.getInstance().insertProduct("Huawei", "Smartphone",product);
+    }
 }
 
 class GetAllProductsTask extends Task {

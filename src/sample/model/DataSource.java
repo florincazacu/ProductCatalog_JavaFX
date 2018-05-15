@@ -9,6 +9,13 @@ public class DataSource {
     private static DataSource instance = new DataSource();
     private Connection connection;
 
+    private PreparedStatement insertIntoBrands;
+    private PreparedStatement insertIntoCategories;
+    private PreparedStatement insertIntoProducts;
+
+    private PreparedStatement queryBrand;
+    private PreparedStatement queryCategory;
+
     private DataSource() {
 
     }
@@ -24,6 +31,14 @@ public class DataSource {
                     "user",
                     "pass"
             );
+
+            insertIntoBrands = connection.prepareStatement(Constants.INSERT_BRAND, Statement.RETURN_GENERATED_KEYS);
+            insertIntoCategories = connection.prepareStatement(Constants.INSERT_CATEGORY, Statement.RETURN_GENERATED_KEYS);
+            insertIntoProducts = connection.prepareStatement(Constants.INSERT_PRODUCT);
+
+            queryBrand = connection.prepareStatement(Constants.QUERY_BRAND);
+            queryCategory = connection.prepareStatement(Constants.QUERY_CATEGORY);
+
             return true;
         } catch (SQLException e) {
             System.out.println("open error: " + e.getMessage());
@@ -112,39 +127,46 @@ public class DataSource {
         }
     }
 
-//    public void insertProduct(String brand, String category, Product product) {
-//        try (PreparedStatement preparedStatement = connection.prepareStatement(Constants.INSERT_PRODUCT)) {
-//            connection.setAutoCommit(false);
-//
-//            int brandId = insertBrand(brand);
-//            int categoryId = insertCategory(category, brandId);
-//            insertIntoSongs.setInt(1, track);
-//            insertIntoSongs.setString(2, category);
-//            insertIntoSongs.setInt(3, categoryId);
-//
-//            int affectedRows = insertIntoSongs.executeUpdate();
-//            if (affectedRows == 1) {
-//                conn.commit();
-//            } else {
-//                throw new SQLException("The song insert failed");
-//            }
-//        } catch (Exception e) {
-//            System.out.println("Insert song exception: " + e.getMessage());
-//            try {
-//                System.out.println("Performing rollback");
-//                conn.rollback();
-//            } catch (SQLException e2) {
-//                System.out.println("Oh boy! Things are really bad! " + e.getMessage());
-//            }
-//        } finally {
-//            try {
-//                System.out.println("Resetting default commit behaviour");
-//                conn.setAutoCommit(true);
-//            } catch (SQLException e) {
-//                System.out.println("Couldn't reset auto-commit! " + e.getMessage());
-//            }
-//        }
-//    }
+    public void insertProduct(String brandName, String category, Product product) {
+        try {
+            connection.setAutoCommit(false);
+            System.out.println("autoCommit false");
+
+            int brandId = insertBrand(brandName);
+            System.out.println("brandId: " + brandId);
+            int categoryId = insertCategory(category, brandId);
+            System.out.println("categoryId: " + categoryId);
+            insertIntoProducts.setString(1, product.getName());
+            insertIntoProducts.setDouble(2, product.getPrice());
+            insertIntoProducts.setString(3, product.getDescription());
+            insertIntoProducts.setString(4, product.getColor());
+            insertIntoProducts.setBoolean(5, product.getInStock());
+            insertIntoProducts.setInt(6, categoryId);
+            insertIntoProducts.setInt(7, brandId);
+
+            int affectedRows = insertIntoProducts.executeUpdate();
+            if (affectedRows == 1) {
+                connection.commit();
+            } else {
+                throw new SQLException("Insert product failed");
+            }
+        } catch (Exception e) {
+            System.out.println("Insert product exception: " + e.getMessage());
+            try {
+                System.out.println("Performing rollback");
+                connection.rollback();
+            } catch (SQLException e2) {
+                System.out.println("Couldn't perform rollback " + e.getMessage());
+            }
+        } finally {
+            try {
+                System.out.println("Resetting default commit behaviour");
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                System.out.println("Couldn't reset auto-commit! " + e.getMessage());
+            }
+        }
+    }
 
     public void insertCategory() {
         String addCategory = Constants.INSERT + Constants.CATEGORIES_TABLE +
@@ -160,6 +182,28 @@ public class DataSource {
         }
     }
 
+    private int insertCategory(String name, int brandId) throws SQLException {
+        queryCategory.setString(1, name);
+        ResultSet results = queryCategory.executeQuery();
+        if (results.next()) {
+            return results.getInt(1);
+        } else {
+            // Insert the category
+            insertIntoCategories.setString(1, name);
+            insertIntoCategories.setInt(2, brandId);
+            int affectedRows = insertIntoCategories.executeUpdate();
+            if (affectedRows != 1) {
+                throw new SQLException("Couldn't insert category!");
+            }
+            ResultSet generatedKeys = insertIntoCategories.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                return generatedKeys.getInt(1);
+            } else {
+                throw new SQLException("Couldn't get _id for category");
+            }
+        }
+    }
+
     public void insertBrand() {
         String addBrand = Constants.INSERT + Constants.BRANDS_TABLE +
                 " (" + Constants.COLUMN_BRAND_NAME + ") " +
@@ -171,6 +215,31 @@ public class DataSource {
             ps.execute();
         } catch (SQLException e) {
             System.out.println("Error adding product: " + e.getMessage());
+        }
+    }
+
+    private int insertBrand(String brand) throws SQLException {
+
+        queryBrand.setString(1, brand);
+        ResultSet results = queryBrand.executeQuery();
+
+        System.out.println("results.next() " + results.next());
+
+        if (results.next()) {
+            return results.getInt(1);
+        } else {
+            // Insert the brand
+            insertIntoBrands.setString(1, brand);
+            int affectedRows = insertIntoBrands.executeUpdate();
+            if (affectedRows != 1) {
+                throw new SQLException("Couldn't insert brand!");
+            }
+            ResultSet generatedKeys = insertIntoBrands.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                return generatedKeys.getInt(1);
+            } else {
+                throw new SQLException("Couldn't get _id for brand");
+            }
         }
     }
 
@@ -195,17 +264,6 @@ public class DataSource {
 
             while (results.next()) {
                 Product product = new Product();
-//                int id = results.getInt(Constants.INDEX_PRODUCT_ID);
-//                String name = results.getString(Constants.INDEX_PRODUCT_NAME);
-//                double price = results.getDouble(Constants.INDEX_PRODUCT_PRICE);
-//                String desc = results.getString(Constants.INDEX_PRODUCT_DESCRIPTION);
-//                String color = results.getString(Constants.INDEX_PRODUCT_COLOR);
-//                boolean inStock = results.getBoolean(Constants.INDEX_PRODUCT_IN_STOCK);
-//                int categoryId = results.getInt(Constants.INDEX_PRODUCT_CATEGORY_ID);
-//                String categoryName = results.getString(Constants.INDEX_PRODUCT_CATEGORY_NAME);
-//                int brandId = results.getInt(Constants.INDEX_PRODUCT_BRAND_ID);
-//                String brandName = results.getString(Constants.INDEX_PRODUCT_BRAND_NAME);
-
                 product.setId(results.getInt(Constants.INDEX_PRODUCT_ID));
                 product.setName(results.getString(Constants.INDEX_PRODUCT_NAME));
                 product.setPrice(results.getDouble(Constants.INDEX_PRODUCT_PRICE));

@@ -58,9 +58,23 @@ public class Constants {
     static final String QUERY_CATEGORIES = "SELECT * FROM " + CATEGORIES_TABLE;
     static final String QUERY_SORT_BY_NAME = " ORDER BY name COLLATE NOCASE ";
 
+    public static final String QUERY_BRAND = "SELECT " + COLUMN_BRAND_ID + " FROM " +
+            BRANDS_TABLE + " WHERE " + COLUMN_BRAND_NAME + " = ?";
+
+    public static final String INSERT_BRAND = INSERT + BRANDS_TABLE +
+            " (" + COLUMN_BRAND_NAME + ") VALUES(?)";
+
+    public static final String INSERT_CATEGORY = INSERT + CATEGORIES_TABLE +
+            " (" + COLUMN_CATEGORY_NAME + ") VALUES(?)";
+
+    public static final String QUERY_CATEGORY = "SELECT " + COLUMN_CATEGORY_ID + " FROM " +
+            CATEGORIES_TABLE + " WHERE " + COLUMN_CATEGORY_NAME + " = ?";
+
     public static final String INSERT_PRODUCT = INSERT + PRODUCTS_TABLE +
-            "(" + COLUMN_PRODUCT_NAME + ", " + COLUMN_PRODUCT_PRICE + ", " + COLUMN_PRODUCT_DESCRIPTION + COLUMN_PRODUCT_COLOR + COLUMN_PRODUCT_IN_STOCK +
-            COLUMN_PRODUCT_CATEGORY_NAME + COLUMN_PRODUCT_BRAND_NAME +
+            "(" + COLUMN_PRODUCT_NAME + ", " + COLUMN_PRODUCT_PRICE + ", " + COLUMN_PRODUCT_DESCRIPTION  + ", "+ COLUMN_PRODUCT_COLOR + ", " + COLUMN_PRODUCT_IN_STOCK + ", " +
+            COLUMN_PRODUCT_CATEGORY_ID + ", " + COLUMN_PRODUCT_BRAND_ID +
             ") VALUES(?, ?, ?, ?, ?, ?, ?)";
+
+
 
 }
