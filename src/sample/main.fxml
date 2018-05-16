@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<BorderPane fx:id="mainBorderPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <top>
         <GridPane hgap="10" vgap="10">
             <padding>
@@ -28,33 +28,51 @@
             <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
             <TextField fx:id="nameTextField" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="0" />
             <Label text="Category" GridPane.columnIndex="4" GridPane.rowIndex="0" />
-            <ComboBox fx:id="categoryComboBox" editable="true" prefHeight="25.0" prefWidth="208.0" GridPane.columnIndex="5" GridPane.columnSpan="3" GridPane.fillWidth="true" GridPane.rowIndex="0" />
+            <ComboBox fx:id="categoryComboBox" editable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="5" GridPane.columnSpan="3" GridPane.rowIndex="0" />
             <Label text="Color" GridPane.columnIndex="8" GridPane.rowIndex="0" />
             <ComboBox fx:id="colorComboBox" editable="true" GridPane.columnIndex="9" GridPane.rowIndex="0" />
             <Label text="Date" GridPane.columnIndex="0" GridPane.rowIndex="1" />
             <DatePicker fx:id="fromDatePicker" maxWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label text="to" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Label text="to" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <DatePicker fx:id="toDatePicker" maxWidth="100" GridPane.columnIndex="3" GridPane.rowIndex="1" />
             <Label text="Price" GridPane.columnIndex="4" GridPane.rowIndex="1" />
             <TextField fx:id="priceLowTextField" maxWidth="100" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-            <Label text="to" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+            <Label text="to" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <TextField fx:id="priceHighTextField" maxWidth="100" GridPane.columnIndex="7" GridPane.rowIndex="1" />
             <Label text="In stock" GridPane.columnIndex="8" GridPane.rowIndex="1" />
             <CheckBox fx:id="inStockCheckBox" GridPane.columnIndex="9" GridPane.rowIndex="1" />
             <Button fx:id="searchButton" text="Search" GridPane.columnIndex="10" GridPane.rowIndex="0" GridPane.rowSpan="2" />
             <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="0" GridPane.columnSpan="10" GridPane.rowIndex="2">
-                <Label text="Page" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                <Button fx:id="previousPageButton" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <TextField fx:id="currentPageTextField" maxWidth="50" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                <Button fx:id="nextPageButton" text="&gt;" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                <Label fx:id="totalPagesLabel" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                <Label text="Page" />
+                <Button fx:id="previousPageButton" />
+                <TextField fx:id="currentPageTextField" maxWidth="50" />
+                <Button fx:id="nextPageButton" text="&gt;" />
+                <Label fx:id="totalPagesLabel" />
                 <Separator orientation="VERTICAL" />
-                <Label text="View" GridPane.columnIndex="5" GridPane.rowIndex="2" />
-                <ComboBox fx:id="itemsPerPage" GridPane.columnIndex="6" GridPane.rowIndex="2" />
-                <Label text="per page" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+                <Label text="View" />
+                <ComboBox fx:id="itemsPerPage" />
+                <Label text="per page" />
                 <Separator orientation="VERTICAL" />
-                <Label fx:id="totalProductsLabel" GridPane.columnIndex="8" GridPane.columnSpan="3" GridPane.rowIndex="2" />
+                <Label fx:id="totalProductsLabel" />
             </HBox>
+         <columnConstraints>
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
         </GridPane>
     </top>
     <center>
@@ -108,11 +126,11 @@
         <VBox>
             <HBox fx:id="buttonsLayout" alignment="CENTER" prefHeight="100.0" prefWidth="20.0" spacing="10" BorderPane.alignment="CENTER_LEFT">
                 <children>
-                    <Button onAction="#insertProduct" maxWidth="${buttonsLayout.width}" prefWidth="${buttonsLayout.width}" text="Add Product" />
-                    <Button maxWidth="${buttonsLayout.width}" prefWidth="${buttonsLayout.width}" text="Modify Product" />
-                    <Button maxWidth="${buttonsLayout.width}" prefWidth="${buttonsLayout.width}" text="Delete Product" />
-                    <Button maxWidth="${buttonsLayout.width}" prefWidth="${buttonsLayout.width}" text="Reset filters" />
-                    <Button maxWidth="${buttonsLayout.width}" onAction="#exit" prefWidth="${buttonsLayout.width}" text="Exit" />
+                    <Button maxWidth="${buttonsLayout.width}" onAction="#showAddProductDialog" prefWidth="100.0" text="Add Product" HBox.hgrow="NEVER" />
+                    <Button maxWidth="${buttonsLayout.width}" prefWidth="100.0" text="Modify Product" HBox.hgrow="NEVER" />
+                    <Button maxWidth="${buttonsLayout.width}" prefWidth="100.0" text="Delete Product" HBox.hgrow="NEVER" />
+                    <Button maxWidth="${buttonsLayout.width}" prefWidth="100.0" text="Reset filters" HBox.hgrow="NEVER" />
+                    <Button maxWidth="${buttonsLayout.width}" onAction="#exit" prefWidth="100.0" text="Exit" HBox.hgrow="NEVER" />
                 </children>
                 <BorderPane.margin>
                     <Insets right="10.0" />
