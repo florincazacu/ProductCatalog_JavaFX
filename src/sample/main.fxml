@@ -108,11 +108,11 @@
         <VBox>
             <HBox fx:id="buttonsLayout" alignment="CENTER" prefHeight="100.0" prefWidth="20.0" spacing="10" BorderPane.alignment="CENTER_LEFT">
                 <children>
-                    <Button maxWidth="${buttonsLayout.width}" prefWidth="${buttonsLayout.width}" text="Add Product" />
+                    <Button onAction="#insertProduct" maxWidth="${buttonsLayout.width}" prefWidth="${buttonsLayout.width}" text="Add Product" />
                     <Button maxWidth="${buttonsLayout.width}" prefWidth="${buttonsLayout.width}" text="Modify Product" />
                     <Button maxWidth="${buttonsLayout.width}" prefWidth="${buttonsLayout.width}" text="Delete Product" />
                     <Button maxWidth="${buttonsLayout.width}" prefWidth="${buttonsLayout.width}" text="Reset filters" />
-                    <Button maxWidth="${buttonsLayout.width}" onAction="#exit" prefWidth="${buttonsLayout.width}" text="Exit" />
+                    <Button onAction="#exit"  maxWidth="${buttonsLayout.width}" prefWidth="${buttonsLayout.width}" text="Exit" />
                 </children>
                 <BorderPane.margin>
                     <Insets right="10.0" />
