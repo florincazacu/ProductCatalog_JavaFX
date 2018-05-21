@@ -54,9 +54,21 @@ public class Constants {
     static final String _ID = " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, ";
     static final String INSERT = "INSERT INTO ";
 
-    static final String QUERY_PRODUCTS = "SELECT * FROM " + PRODUCTS_TABLE;
+    static final String QUERY_PRODUCTS = "SELECT " + PRODUCTS_TABLE + "." + COLUMN_PRODUCT_ID + ", " + PRODUCTS_TABLE + "." + COLUMN_PRODUCT_NAME + ", " + PRODUCTS_TABLE + "." + COLUMN_PRODUCT_PRICE + ", " +
+        PRODUCTS_TABLE + "." + COLUMN_PRODUCT_DESCRIPTION + ", " + PRODUCTS_TABLE + "." + COLUMN_PRODUCT_COLOR + ", " + PRODUCTS_TABLE + "." + COLUMN_PRODUCT_IN_STOCK + ", " +
+        PRODUCTS_TABLE + "." + COLUMN_PRODUCT_CATEGORY_ID + ", " +
+        CATEGORIES_TABLE + "." + COLUMN_CATEGORY_NAME + " AS " + COLUMN_PRODUCT_CATEGORY_NAME + ", " +
+        PRODUCTS_TABLE + "." + COLUMN_PRODUCT_BRAND_ID + ", " +
+        BRANDS_TABLE + "." + COLUMN_BRAND_NAME + " AS " + COLUMN_PRODUCT_BRAND_NAME +
+        " FROM ((" + PRODUCTS_TABLE +
+        " INNER JOIN " + CATEGORIES_TABLE + " ON " + PRODUCTS_TABLE + "." + COLUMN_PRODUCT_CATEGORY_ID + " = " + CATEGORIES_TABLE + "." + COLUMN_CATEGORY_ID + ")" +
+        " INNER JOIN " + BRANDS_TABLE + " ON " + PRODUCTS_TABLE + "." + COLUMN_PRODUCT_BRAND_ID + " = " + BRANDS_TABLE + "." + COLUMN_BRAND_ID + ")";
+
     static final String QUERY_CATEGORIES = "SELECT * FROM " + CATEGORIES_TABLE;
-    static final String QUERY_SORT_BY_NAME = " ORDER BY name COLLATE NOCASE ";
+
+    static final String QUERY_SORT_BY_BRAND_NAME = " ORDER BY + " + BRANDS_TABLE + "." + COLUMN_BRAND_NAME + " COLLATE NOCASE ";
+    static final String QUERY_SORT_BY_CATEGORY_NAME = " ORDER BY + " + CATEGORIES_TABLE + "." + COLUMN_CATEGORY_NAME + " COLLATE NOCASE ";
+    static final String QUERY_SORT_BY_PRODUCT_NAME = " ORDER BY + " + PRODUCTS_TABLE + "." + COLUMN_PRODUCT_NAME + " COLLATE NOCASE ";
 
     public static final String QUERY_BRAND = "SELECT " + COLUMN_BRAND_ID + " FROM " +
             BRANDS_TABLE + " WHERE " + COLUMN_BRAND_NAME + " = ?";
@@ -74,7 +86,4 @@ public class Constants {
             "(" + COLUMN_PRODUCT_NAME + ", " + COLUMN_PRODUCT_PRICE + ", " + COLUMN_PRODUCT_DESCRIPTION  + ", "+ COLUMN_PRODUCT_COLOR + ", " + COLUMN_PRODUCT_IN_STOCK + ", " +
             COLUMN_PRODUCT_CATEGORY_ID + ", " + COLUMN_PRODUCT_BRAND_ID +
             ") VALUES(?, ?, ?, ?, ?, ?, ?)";
-
-
-
 }

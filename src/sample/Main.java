@@ -10,7 +10,7 @@ import sample.model.DataSource;
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("main.fxml"));
         Parent root = loader.load();
         Controller controller = loader.getController();
@@ -20,20 +20,18 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    // Github Test
-
     @Override
     public void init() throws Exception {
         super.init();
         if (!DataSource.getInstance().open()) {
             System.out.println("Cannot connect to DB");
         }
-//        DataSource.getInstance().createProductsTable();
 //        DataSource.getInstance().createCategoriesTable();
 //        DataSource.getInstance().createBrandsTable();
+//        DataSource.getInstance().createProductsTable();
 //        DataSource.getInstance().insertCategory();
-//        DataSource.getInstance().insertProduct();
 //        DataSource.getInstance().insertBrand();
+//        DataSource.getInstance().insertProduct();
     }
 
     @Override

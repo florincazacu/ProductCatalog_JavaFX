@@ -64,10 +64,10 @@ public class DataSource {
                 Constants.COLUMN_PRODUCT_DESCRIPTION + " text, " +
                 Constants.COLUMN_PRODUCT_COLOR + " text, " +
                 Constants.COLUMN_PRODUCT_IN_STOCK + " boolean, " +
-                Constants.COLUMN_PRODUCT_CATEGORY_ID + " integer, " +
-                Constants.COLUMN_PRODUCT_CATEGORY_NAME + " text, " +
-                Constants.COLUMN_PRODUCT_BRAND_ID + " integer, " +
-                Constants.COLUMN_PRODUCT_BRAND_NAME + " text " +
+                Constants.COLUMN_PRODUCT_CATEGORY_ID + " integer " + " REFERENCES " + Constants.CATEGORIES_TABLE + "(" + Constants.COLUMN_CATEGORY_ID + "), " +
+//                Constants.COLUMN_PRODUCT_CATEGORY_NAME + " text, " +
+                Constants.COLUMN_PRODUCT_BRAND_ID + " integer " + " REFERENCES " + Constants.BRANDS_TABLE + "(" + Constants.COLUMN_BRAND_ID + ") " +
+//                Constants.COLUMN_PRODUCT_BRAND_NAME + " text " +
                 ")";
 
         System.out.println("create products table: " + createProductsTable);
@@ -79,10 +79,14 @@ public class DataSource {
         }
     }
 
+    public void createColorsTable() {
+
+    }
+
     public void createCategoriesTable() {
         String createCategoriesTable = Constants.CREATE_TABLE + Constants.CATEGORIES_TABLE +
                 " (" + Constants.COLUMN_CATEGORY_ID + Constants._ID +
-                Constants.COLUMN_CATEGORY_NAME + " text)";
+                Constants.COLUMN_CATEGORY_NAME + " text unique)";
         System.out.println("create categories table " + createCategoriesTable);
 
         try (PreparedStatement ps = connection.prepareStatement(createCategoriesTable)) {
@@ -95,7 +99,7 @@ public class DataSource {
     public void createBrandsTable() {
         String createCategoriesTable = Constants.CREATE_TABLE + Constants.BRANDS_TABLE +
                 " (" + Constants.COLUMN_BRAND_ID + Constants._ID +
-                Constants.COLUMN_BRAND_NAME + " text)";
+                Constants.COLUMN_BRAND_NAME + " text unique)";
         System.out.println("create brands table " + createCategoriesTable);
 
         try (PreparedStatement ps = connection.prepareStatement(createCategoriesTable)) {
@@ -113,10 +117,12 @@ public class DataSource {
                 Constants.COLUMN_PRODUCT_COLOR + ", " +
                 Constants.COLUMN_PRODUCT_IN_STOCK + ", " +
                 Constants.COLUMN_PRODUCT_CATEGORY_ID + ", " +
-                Constants.COLUMN_PRODUCT_CATEGORY_NAME + ", " +
-                Constants.COLUMN_PRODUCT_BRAND_ID + ", " +
-                Constants.COLUMN_PRODUCT_BRAND_NAME + ") " +
-                "VALUES('name', '50.00', 'description', 'color', 'true', '2', 'category', '1', 'brand')";
+//                Constants.COLUMN_PRODUCT_CATEGORY_NAME + ", " +
+                Constants.COLUMN_PRODUCT_BRAND_ID +
+//                Constants.COLUMN_PRODUCT_BRAND_NAME + ") " +
+                ") " +
+                "VALUES('Nexus', '50.00', 'Nexus Brand', 'Black', 'true', '1', '1')";
+//                "VALUES('Galaxy S9', '50.00', 'Latest Samsung Model', 'Black', 'true', '2', 'category', '1', 'brand')";
 
         System.out.println("insert: " + addProduct);
 
@@ -171,7 +177,7 @@ public class DataSource {
     public void insertCategory() {
         String addCategory = Constants.INSERT + Constants.CATEGORIES_TABLE +
                 " (" + Constants.COLUMN_CATEGORY_NAME + ") " +
-                "VALUES('cat_name_test')";
+                "VALUES('Smartphone')";
 
         System.out.println("insert: " + addCategory);
 
@@ -207,7 +213,7 @@ public class DataSource {
     public void insertBrand() {
         String addBrand = Constants.INSERT + Constants.BRANDS_TABLE +
                 " (" + Constants.COLUMN_BRAND_NAME + ") " +
-                "VALUES('brand_name_test')";
+                "VALUES('Samsung')";
 
         System.out.println("insert: " + addBrand);
 
@@ -243,9 +249,16 @@ public class DataSource {
         }
     }
 
-    private StringBuilder sortQuery(int sortOrder, StringBuilder stringBuilder) {
+    private StringBuilder sortQuery(int sortOrder, StringBuilder stringBuilder, String sortBy) {
         if (sortOrder != Constants.ORDER_DEFAULT) {
-            stringBuilder.append(Constants.QUERY_SORT_BY_NAME);
+            if (sortBy.equals("brandName")) {
+                stringBuilder.append(Constants.QUERY_SORT_BY_BRAND_NAME);
+            } else if (sortBy.equals("categoryName")) {
+                stringBuilder.append(Constants.QUERY_SORT_BY_CATEGORY_NAME);
+            } else if (sortBy.equals("productName")) {
+                stringBuilder.append(Constants.QUERY_SORT_BY_PRODUCT_NAME);
+            }
+
             if (sortOrder == Constants.ORDER_DESC) {
                 stringBuilder.append("DESC");
             } else {
@@ -257,8 +270,9 @@ public class DataSource {
 
     public List<Product> queryProducts(int sortOrder) {
         StringBuilder stringBuilder = new StringBuilder(Constants.QUERY_PRODUCTS);
-
-        try (PreparedStatement ps = connection.prepareStatement(sortQuery(sortOrder, stringBuilder).toString());
+        String sorted = sortQuery(sortOrder, stringBuilder, "productName").toString();
+        System.out.println("sorted: " + sorted);
+        try (PreparedStatement ps = connection.prepareStatement(sorted);
              ResultSet results = ps.executeQuery()) {
             List<Product> products = new ArrayList<>();
 
@@ -269,7 +283,8 @@ public class DataSource {
                 product.setPrice(results.getDouble(Constants.INDEX_PRODUCT_PRICE));
                 product.setDescription(results.getString(Constants.INDEX_PRODUCT_DESCRIPTION));
                 product.setColor(results.getString(Constants.INDEX_PRODUCT_COLOR));
-                product.setInStock(results.getBoolean(Constants.INDEX_PRODUCT_IN_STOCK));
+                product.setInStock(Boolean.parseBoolean(results.getString(Constants.INDEX_PRODUCT_IN_STOCK)));
+//                product.setInStock(results.getBoolean(Constants.INDEX_PRODUCT_IN_STOCK));
                 product.setCategoryId(results.getInt(Constants.INDEX_PRODUCT_CATEGORY_ID));
                 product.setCategoryName(results.getString(Constants.INDEX_PRODUCT_CATEGORY_NAME));
                 product.setBrandId(results.getInt(Constants.INDEX_PRODUCT_BRAND_ID));
@@ -285,14 +300,17 @@ public class DataSource {
 
     public List<Category> queryCategories(int sortOrder) {
         StringBuilder stringBuilder = new StringBuilder(Constants.QUERY_CATEGORIES);
+        String sorted = sortQuery(sortOrder, stringBuilder, "categoryName").toString();
 
-        try (PreparedStatement ps = connection.prepareStatement(sortQuery(sortOrder, stringBuilder).toString());
+        System.out.println("sorted in categories: " + sorted);
+
+        try (PreparedStatement ps = connection.prepareStatement(sorted);
              ResultSet results = ps.executeQuery()) {
             List<Category> categories = new ArrayList<>();
             while (results.next()) {
                 Category category = new Category();
-                int id = results.getInt(Constants.INDEX_PRODUCT_ID);
-                String name = results.getString(Constants.INDEX_PRODUCT_NAME);
+                int id = results.getInt(Constants.INDEX_CATEGORY_ID);
+                String name = results.getString(Constants.INDEX_CATEGORY_NAME);
                 category.setId(id);
                 category.setName(name);
                 categories.add(category);

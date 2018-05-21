@@ -34,10 +34,13 @@ public class Controller {
         Platform.exit();
     }
 
-    public void listProducts() {
+    public void initialize() {
         previousPageButton.setText("<");
         totalPagesLabel.setText("100 pages");
         totalProductsLabel.setText("Total 100 products");
+    }
+
+    public void listProducts() {
         Task<ObservableList<Product>> task = new GetAllProductsTask();
         productsTable.itemsProperty().bind(task.valueProperty());
         new Thread(task).start();
