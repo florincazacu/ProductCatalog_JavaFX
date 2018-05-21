@@ -5,13 +5,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TableView;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import sample.model.Constants;
 import sample.model.DataSource;
 import sample.model.Product;
+
+import java.io.IOException;
+import java.util.Optional;
 
 public class Controller {
     @FXML
@@ -24,6 +27,8 @@ public class Controller {
     public Label totalPagesLabel;
     @FXML
     private TableView<Product> productsTable;
+    @FXML
+    private BorderPane mainBorderPane;
 
     public void exit() {
         Platform.exit();
@@ -38,7 +43,7 @@ public class Controller {
         new Thread(task).start();
     }
 
-    public void insertProduct(){
+    public void insertProduct() {
         final Product product = new Product();
 
         product.setName("P20");
@@ -47,7 +52,31 @@ public class Controller {
         product.setColor("Black");
         product.setInStock(true);
 
-        DataSource.getInstance().insertProduct("Huawei", "Smartphone",product);
+        DataSource.getInstance().insertProduct("Huawei", "Smartphone", product);
+    }
+
+    @FXML
+    public void showAddProductDialog() {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(mainBorderPane.getScene().getWindow());
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("addProductDialog.fxml"));
+            dialog.getDialogPane().setContent(root);
+        } catch (IOException e) {
+            System.out.println("Couldn't load the dialog: " + e.getMessage());
+            e.printStackTrace();
+            return;
+        }
+
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get().equals(ButtonType.OK)) {
+            System.out.println("OK Pressed");
+        } else {
+            System.out.println("Cancel pressed");
+        }
     }
 }
 
