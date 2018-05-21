@@ -3,12 +3,12 @@ package sample.model;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class Brand {
+public class Color {
 
     private SimpleIntegerProperty id;
     private SimpleStringProperty name;
 
-    public Brand() {
+    public Color() {
         this.id = new SimpleIntegerProperty();
         this.name = new SimpleStringProperty();
     }
@@ -21,11 +21,11 @@ public class Brand {
         this.name.set(name);
     }
 
-    public int getId() {
+    public int getId(){
         return id.get();
     }
 
-    public String getName() {
+    public String getName(){
         return name.get();
     }
 

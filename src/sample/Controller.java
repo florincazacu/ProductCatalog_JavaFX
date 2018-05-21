@@ -46,17 +46,17 @@ public class Controller {
         new Thread(task).start();
     }
 
-    public void insertProduct() {
-        final Product product = new Product();
-
-        product.setName("P20");
-        product.setDescription("Mobile phone");
-        product.setPrice(100.00);
-        product.setColor("Black");
-        product.setInStock(true);
-
-        DataSource.getInstance().insertProduct("Huawei", "Smartphone", product);
-    }
+//    public void insertProduct() {
+//        final Product product = new Product();
+//
+//        product.setName("P20");
+//        product.setDescription("Mobile phone");
+//        product.setPrice(100.00);
+//        product.setColorName("Black");
+//        product.setInStock(true);
+//
+//        DataSource.getInstance().insertProduct(product);
+//    }
 
     @FXML
     public void showAddProductDialog() {

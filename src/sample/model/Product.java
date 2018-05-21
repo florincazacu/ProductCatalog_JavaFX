@@ -5,17 +5,16 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-import java.util.Date;
-
 public class Product {
 
     private SimpleIntegerProperty id;
     private SimpleStringProperty name;
     private SimpleStringProperty description;
     private SimpleDoubleProperty price;
-    private SimpleStringProperty color;
     private SimpleBooleanProperty inStock;
-    private Date expiringDate;
+
+    private SimpleIntegerProperty colorId;
+    private SimpleStringProperty colorName;
 
     private SimpleIntegerProperty categoryId;
     private SimpleStringProperty categoryName;
@@ -29,8 +28,9 @@ public class Product {
         this.name = new SimpleStringProperty();
         this.description = new SimpleStringProperty();
         this.price = new SimpleDoubleProperty();
-        this.color = new SimpleStringProperty();
         this.inStock = new SimpleBooleanProperty();
+        this.colorId = new SimpleIntegerProperty();
+        this.colorName = new SimpleStringProperty();
         this.categoryName = new SimpleStringProperty();
         this.categoryId = new SimpleIntegerProperty();
         this.brandId = new SimpleIntegerProperty();
@@ -53,20 +53,20 @@ public class Product {
         this.price.set(price);
     }
 
-    public void setColor(String color) {
-        this.color.set(color);
+    public void setColorName(String colorName) {
+        this.colorName.set(colorName);
     }
 
     public void setInStock(boolean inStock) {
         this.inStock.set(inStock);
     }
 
-    public void setExpiringDate(Date date) {
-        this.expiringDate = date;
-    }
-
     public void setCategoryName(String categoryName) {
         this.categoryName.set(categoryName);
+    }
+
+    public void setColorId(int colorId) {
+        this.colorId.set(colorId);
     }
 
     public void setCategoryId(int categoryId) {
@@ -97,16 +97,16 @@ public class Product {
         return price.get();
     }
 
-    public String getColor() {
-        return color.get();
+    public String getColorName() {
+        return colorName.get();
     }
 
     public boolean getInStock() {
         return inStock.get();
     }
 
-    public Date getExpiringDate(){
-        return expiringDate;
+    public int getColorId() {
+        return colorId.get();
     }
 
     public int getCategoryId() {

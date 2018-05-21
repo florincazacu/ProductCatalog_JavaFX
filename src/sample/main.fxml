@@ -31,10 +31,10 @@
             <ComboBox fx:id="categoryComboBox" editable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="5" GridPane.columnSpan="3" GridPane.rowIndex="0" />
             <Label text="Color" GridPane.columnIndex="8" GridPane.rowIndex="0" />
             <ComboBox fx:id="colorComboBox" editable="true" GridPane.columnIndex="9" GridPane.rowIndex="0" />
-            <Label text="Date" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-            <DatePicker fx:id="fromDatePicker" maxWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label text="to" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <DatePicker fx:id="toDatePicker" maxWidth="100" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <!--<Label text="Date" GridPane.columnIndex="0" GridPane.rowIndex="1" />-->
+            <!--<DatePicker fx:id="fromDatePicker" maxWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="1" />-->
+            <!--<Label text="to" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />-->
+            <!--<DatePicker fx:id="toDatePicker" maxWidth="100" GridPane.columnIndex="3" GridPane.rowIndex="1" />-->
             <Label text="Price" GridPane.columnIndex="4" GridPane.rowIndex="1" />
             <TextField fx:id="priceLowTextField" maxWidth="100" GridPane.columnIndex="5" GridPane.rowIndex="1" />
             <Label text="to" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
@@ -78,14 +78,14 @@
                         <PropertyValueFactory property="description" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn prefWidth="${productsTable.width}" text="Color">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="color" />
-                    </cellValueFactory>
-                </TableColumn>
                 <TableColumn prefWidth="${productsTable.width}" text="In stock">
                     <cellValueFactory>
                         <PropertyValueFactory property="inStock" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="${productsTable.width}" text="Color">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="colorName" />
                     </cellValueFactory>
                 </TableColumn>
                 <TableColumn prefWidth="${productsTable.width}" text="Category">

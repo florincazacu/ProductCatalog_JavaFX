@@ -26,6 +26,7 @@ public class Main extends Application {
         if (!DataSource.getInstance().open()) {
             System.out.println("Cannot connect to DB");
         }
+//        DataSource.getInstance().createColorsTable();
 //        DataSource.getInstance().createCategoriesTable();
 //        DataSource.getInstance().createBrandsTable();
 //        DataSource.getInstance().createProductsTable();

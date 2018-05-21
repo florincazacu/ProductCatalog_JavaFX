@@ -28,4 +28,9 @@ public class Category {
     public String getName(){
         return name.get();
     }
+
+    @Override
+    public String toString() {
+        return name.get();
+    }
 }
